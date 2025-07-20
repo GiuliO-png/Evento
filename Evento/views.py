@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.db.models import F, ExpressionWrapper #per prendere il valore di maxPartecipanti necessario per calcolare i posti disponibili
 from .models import Evento, Prenotazione # Necessario per gestire un Model!
 from .forms import Registrazione, form_proposta_evento ,form_segnalazione_evento
+from django.contrib.auth.decorators import login_required, user_passes_test
 def index(request):
     lista_eventi = Evento.objects.annotate(postiDisponibili= F('maxPartecipanti') - Count("evento_prenotazione"))
     template = loader.get_template("Evento/index.html")
@@ -142,5 +143,3 @@ def paginaUtente(request):#nuovo rispetto alle ultime modifiche il 17/07/25
 
     return render(request, "Evento/pagina_utente.html",{"eventi_creati": eventi_creati, "eventi_iscritti": eventi_iscritti, "eventi_attivi": eventi_attivi })
 
-
-#ciao

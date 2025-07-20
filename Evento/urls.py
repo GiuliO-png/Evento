@@ -32,5 +32,4 @@ path(
     auth_views.LogoutView.as_view(next_page='/Evento/login/'),
     name='logout'
 ),
-
 ]

@@ -27,7 +27,7 @@ urlpatterns = [
         authentication_form=LoginForm
     ), name='login_root'),
 
-    path("Evento/", include("Evento.urls")),
+    path("Evento/", include(("Evento.urls"), namespace="Evento")),
     path('admin/', admin.site.urls),
 ]
 
