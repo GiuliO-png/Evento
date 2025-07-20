@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagina Personale</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'Evento/css/style.css' %}">
+</head>
+<body>
+<h1>Benvenuto, {{ request.user.first_name }}</h1>
+
+<h2>Lista Eventi creati</h2>
+<ul>
+{% for evento in eventi_creati %}
+	<li>titolo: <a href="{% url 'Evento:detail' evento.id %}">{{ evento.titolo }}</a> <br>
+    data inizio: {{ evento.dataInizio }}<br>
+    status evento: {{ evento.status }}<br><br></li>
+{% endfor %}
+</ul>
+
+<h2>Lista Eventi attivi a cui sei iscritto</h2>
+<ul>
+{% for evento in eventi_attivi %}
+	<li>titolo: <a href="{% url 'Evento:detail' evento.id %}">{{ evento.titolo }}</a> <br>
+    data inizio: {{ evento.dataInizio }}<br>
+    status evento: {{ evento.status }}<br><br></li>
+{% endfor %}
+</ul>
+
+<h2>Lista Eventi passati</h2>
+<ul>
+{% for evento in eventi_iscritti %}
+	<li>titolo: <a href="{% url 'Evento:detail' evento.id %}">{{ evento.titolo }}</a> <br>
+    data inizio: {{ evento.dataInizio }}<br>
+    status evento: {{ evento.status }}<br><br></li>
+{% endfor %}
+</ul>
+
+</body>
+</html>

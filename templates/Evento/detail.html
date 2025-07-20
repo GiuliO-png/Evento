@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ evento.titolo }}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'Evento/css/detail.css' %}">
+</head>
+<body>
+<h1>{{ evento.titolo }}</h1><br><br>
+
+<p>{{ evento.descrizione }}</p><br>
+
+<p>il tema dell'evento è: {{ evento.tema }}</p><br>
+
+<p>Data inizio evento: {{ evento.dataInizio|date:"l j F Y" }}</p>
+
+<p>Ora inizio: {{ evento.dataInizio|time:"G:i" }} </p>
+
+<p>Luogo dell' evento: {{ evento.luogo }}</p>
+
+<p>Durata Stimata: {{ evento.durata_ore }}{% if evento.durata_ore == 1 %}ora{% else %} ore{% endif %} {{ evento.durata_minuti }} minuti</p>
+
+{% if evento.locandina %}
+  <img src="{{ evento.locandina.url }}" alt="Locandina evento" style="max-width: 100%; height: auto;">
+{% else %}
+  <p>Nessuna locandina disponibile.</p>
+{% endif %}
+
+
+{{ scadenza_iscrizioni }}
+
+{% if evento.postiDisponibili <= 0 %}
+    <p class="error">I posti disponibili sono esauriti</p>
+{% endif %}
+{% if iscritto %}
+    <p class="success">Sei iscritto a questo evento</p>
+    {% if scadenza_iscrizioni >= 86400 %}
+  <form action="{% url 'Evento:detail' evento.id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" name="azione" value="Disiscriviti">
+    {% else %}
+      <p>Non è più possibile disiscriversi a meno di 24 ore dall' inizio dell'evento.</p>
+  {% endif %}
+</form>
+{% endif %}
+
+{%if evento.postiDisponibili > 0 and not iscritto %}
+ <form action="{% url 'Evento:detail' evento.id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" name="azione" value="Partecipa">
+</form>
+{% endif %}
+
+<a href="{% url 'Evento:segnalazione_evento' evento.id %}">
+    <button type="button">Segnala Evento</button>
+</a>
+
+
+</body>
+</html>

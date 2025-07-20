@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista Eventi</title>
+{#    {% load static %}#}
+{#    <link rel="stylesheet" href="{% static 'Evento/css/style.css' %}">#}
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        /* Evidenzia il link attivo con un colore personalizzato */
+        .nav-link.active {
+            color: #f8d02e !important;
+            font-weight: bold;
+        }
+
+        .navbar .navbar-brand + span {
+            margin-left: 8px;
+            font-size: 1rem;
+        }
+    </style>
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+
+            <!-- Icona utente + benvenuto -->
+            <div class="d-flex align-items-center">
+                <a class="navbar-brand me-2" href="/Evento/utente/" title="Profilo Utente">
+                    <i class="bi bi-person-circle" style="font-size: 1.8rem;"></i>
+                </a>
+                {% if request.user.is_authenticated %}
+                    <span class="text-white">Benvenuto, {{ request.user.first_name }}</span>
+                {% endif %}
+            </div>
+
+            <!-- Menu toggle per dispositivi mobili -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Link di navigazione -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/Evento/' %}active{% endif %}" href="/Evento/">Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/Evento/proposta_evento/' %}active{% endif %}" href="/Evento/proposta_evento/">Proponi Evento</a>
+                    </li>
+                    {% if request.user.is_authenticated %}
+                        <li class="nav-item">
+                            <form action="{% url 'Evento:logout' %}" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="nav-link btn btn-link" style="color: white; text-decoration: none;">
+                                    Logout
+                                </button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/Evento/login/' %}active{% endif %}" href="{% url 'login' %}">Login</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <h1>Lista Eventi</h1>
+
+    {% if request.user.is_authenticated and request.user.is_staff %}
+        <div class="admin-btn">
+            <a href="{% url 'Evento:supervisione_eventi' %}">
+                <button type="button">Supervisione Eventi (Admin)</button>
+            </a>
+        </div>
+    {% endif %}
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+
+    {% if lista_eventi %}
+        <ul>
+            {% for evento in lista_eventi %}
+                <li>titolo: <a href="{% url 'Evento:detail' evento.id %}">{{ evento.titolo }}</a> <br>
+                data inizio: {{ evento.dataInizio }}<br>
+                posti rimanenti: {{ evento.postiDisponibili}}<br><br></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+    <p>Non ci sono eventi disponibili.</p>
+    {% endif %}
+</body>
+</html>

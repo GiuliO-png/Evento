@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form action="{% url 'Evento:register'%}" method="POST">
+        {% csrf_token %}
+        <fieldset>
+            <legend><h1>Registrazione</h1></legend>
+            <p>Nome:</p> {{ form.first_name }}
+            <p>Cognome:</p> {{ form.last_name }}
+            <p>Email:</p> {{ form.username }}
+            <p>Password:</p> {{ form.password1 }}
+            <p>Conferma password:</p> {{ form.password2 }}
+            <p>Corso:</p> {{ form.corso_di_studi }}
+            <p>Anno di corso:</p> {{ form.anno_corso }}
+
+        </fieldset>
+
+        <button type="submit">registrati</button>
+    </form>
+
+</body>
+</html>

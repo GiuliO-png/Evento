@@ -1,0 +1,6 @@
+<h3>Segnalazione Evento</h3>
+<form action="{% url 'Evento:segnalazione_evento' evento.id %}" method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit" class="btn btn-primary">Invia</button>
+</form>

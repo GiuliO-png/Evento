@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Supervisione Eventi</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'Evento/css/detail.css' %}">
+</head>
+<body>
+    <h1>Supervisione Eventi</h1>
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if eventi %}
+        <ul>
+        {% for evento in eventi %}
+            <li>
+                <form method="post" style="margin-bottom: 20px;">
+                    {% csrf_token %}
+                    <strong>{{ evento.titolo }}</strong> — Stato attuale: {{ evento.get_status_display }} <br>
+                    <label for="status_{{ evento.id }}">Modifica stato:</label>
+                    <select name="status" id="status_{{ evento.id }}">
+                        {% for key, value in evento.STATUS_CHOICES %}
+                            <option value="{{ key }}" {% if evento.status == key %}selected{% endif %}>{{ value }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="hidden" name="evento_id" value="{{ evento.id }}">
+                    <button type="submit">Aggiorna Stato</button>
+                </form>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Non ci sono eventi da gestire.</p>
+    {% endif %}
+
+    <a href="{% url 'Evento:index' %}">Torna alla Home</a>
+</body>
+</html>
