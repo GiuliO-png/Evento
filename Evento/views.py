@@ -143,4 +143,4 @@ def paginaUtente(request):#nuovo rispetto alle ultime modifiche il 17/07/25
     return render(request, "Evento/pagina_utente.html",{"eventi_creati": eventi_creati, "eventi_iscritti": eventi_iscritti, "eventi_attivi": eventi_attivi })
 
 
-
+#ciao
